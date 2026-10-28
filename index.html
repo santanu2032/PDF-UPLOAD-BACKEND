@@ -1,689 +1,140 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CSE CYS 1 (32-64) — Public PDF Submission Portal</title>
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Lucide Icons -->
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <!-- Google Fonts: Inter & JetBrains Mono -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        mono: ['JetBrains Mono', 'monospace'],
-                    },
-                    colors: {
-                        cyber: {
-                            50: '#ecfdf5',
-                            100: '#d1fae5',
-                            400: '#34d399',
-                            500: '#10b981',
-                            600: '#059669',
-                            900: '#064e3b',
-                            950: '#022c22',
-                        }
-                    }
-                }
-            }
-        }
-    </script>
+    <title>CSE CYS 1 (1-64) — PDF Upload Portal</title>
     <style>
-        body {
-            background-color: #090d16;
-            background-image:
-                    radial-gradient(at 0% 0%, rgba(16, 185, 129, 0.12) 0px, transparent 50%),
-                    radial-gradient(at 100% 0%, rgba(59, 130, 246, 0.12) 0px, transparent 50%),
-                    linear-gradient(to bottom, rgba(15, 23, 42, 0.8), rgba(9, 13, 22, 1));
-            min-height: 100vh;
-        }
-        .cyber-grid {
-            background-size: 32px 32px;
-            background-image:
-                    linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-                    linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-        }
-        .drop-zone-active {
-            border-color: #10b981 !important;
-            background-color: rgba(16, 185, 129, 0.08) !important;
-            transform: scale(1.005);
-        }
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #0f172a;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #334155;
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #475569;
-        }
+        :root { --bg: #191C24; --surface: #2A2D35; --primary: #00D084; --text: #E0E0E0; --border: #3A3D45; }
+        body { font-family: system-ui, sans-serif; background-color: var(--bg); color: var(--text); padding: 20px; max-width: 800px; margin: 0 auto; }
+        .card { background: var(--surface); padding: 25px; border-radius: 12px; margin-bottom: 20px; border: 1px solid var(--border); }
+        h1, h2 { margin-top: 0; }
+        select, input, button { width: 100%; padding: 12px; margin: 8px 0; border-radius: 6px; border: 1px solid var(--border); background: var(--bg); color: var(--text); }
+        button { background: var(--primary); color: #000; font-weight: bold; cursor: pointer; border: none; transition: opacity 0.2s; }
+        button:hover { opacity: 0.8; }
+        button:disabled { background: #555; cursor: not-allowed; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid var(--border); }
+        th { color: var(--primary); }
     </style>
 </head>
-<body class="text-slate-100 font-sans cyber-grid antialiased selection:bg-emerald-500/30 selection:text-emerald-300">
+<body>
 
-<!-- Top Notification Toast -->
-<div id="toastContainer" class="fixed top-5 right-5 z-50 flex flex-col gap-2 max-w-md w-full pointer-events-none px-4 sm:px-0"></div>
+<div class="card">
+    <h1>CYS 1 Assignment Submission</h1>
+    <p>Submit your PDFs directly to the cohort's Drive folder.</p>
 
-<!-- Header / Navbar -->
-<header class="border-b border-slate-800/80 bg-slate-900/70 backdrop-blur-xl sticky top-0 z-30">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-wrap items-center justify-between gap-4">
-        <!-- Brand / Folder Identity -->
-        <div class="flex items-center gap-3.5">
-            <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-emerald-500/20 to-blue-500/20 border border-emerald-500/40 flex items-center justify-center shadow-lg shadow-emerald-500/10">
-                <i data-lucide="shield-check" class="w-6 h-6 text-emerald-400"></i>
-            </div>
-            <div>
-                <div class="flex items-center gap-2">
-                        <span class="px-2 py-0.5 text-[11px] font-mono uppercase tracking-wider font-semibold rounded-md bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
-                            Roll 32–64
-                        </span>
-                    <span class="px-2 py-0.5 text-[11px] font-mono rounded-md bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 flex items-center gap-1.5">
-                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-                            <span>Live Backend Connected</span>
-                        </span>
-                </div>
-                <h1 class="text-lg sm:text-xl font-bold tracking-tight text-white mt-0.5 flex items-center gap-2">
-                    CSE CYS 1 (32-64)
-                    <span class="text-slate-400 font-normal text-sm hidden sm:inline">— Public PDF Dropzone</span>
-                </h1>
-            </div>
-        </div>
+    <select id="rollNo">
+        <option value="" disabled selected>Select Roll Number...</option>
+    </select>
 
-        <!-- Action Buttons -->
-        <div class="flex items-center gap-2.5 flex-wrap">
-            <a href="https://drive.google.com/drive/folders/1LWipkExkedlCi2EKhG-YJKpt2HjKOZfe" target="_blank" rel="noopener noreferrer" class="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-medium text-xs sm:text-sm flex items-center gap-2 transition-all shadow-lg shadow-emerald-600/20">
-                <i data-lucide="folder-up" class="w-4 h-4"></i>
-                <span>Open Drive Folder</span>
-                <i data-lucide="external-link" class="w-3.5 h-3.5 opacity-80"></i>
-            </a>
-        </div>
-    </div>
-</header>
+    <input type="text" id="studentName" placeholder="First Name (e.g., Santanu)" required>
+    <input type="file" id="fileInput" accept="application/pdf" required>
+    <button id="uploadBtn" onclick="uploadFile()">Upload PDF</button>
+    <p id="status"></p>
+</div>
 
-<!-- Main Content Container -->
-<main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-
-    <!-- Folder Info Banner -->
-    <div class="mb-8 p-4 sm:p-5 rounded-2xl bg-slate-900/90 border border-slate-800/90 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 shadow-xl">
-        <div class="flex items-start sm:items-center gap-3.5 w-full">
-            <div class="p-2.5 rounded-xl bg-blue-500/10 border border-blue-500/20 text-blue-400 shrink-0 mt-0.5 sm:mt-0">
-                <i data-lucide="hard-drive" class="w-5 h-5"></i>
-            </div>
-            <div class="space-y-1 w-full">
-                <div class="flex flex-wrap items-center justify-between gap-2">
-                    <div class="flex items-center gap-2 text-xs text-slate-400">
-                        <span>Target Google Drive Folder:</span>
-                        <code class="px-2 py-0.5 rounded bg-slate-950 text-emerald-400 font-mono border border-slate-800">1LWipkExkedlCi2EKhG-YJKpt2HjKOZfe</code>
-                    </div>
-                </div>
-                <p class="text-xs sm:text-sm text-slate-300">
-                    Upload your lab reports, assignments, or project PDFs directly below. Automatic naming formats your file as <span class="font-mono text-emerald-400 text-xs">RollNo_Name_Document.pdf</span>.
-                </p>
-            </div>
-        </div>
-    </div>
-
-    <!-- Main Grid: Left (Metadata + Uploader) & Right (Queue + Embedded Folder Helper) -->
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-
-        <!-- Left Column: Student Metadata & Drag-and-Drop Zone (7 cols) -->
-        <div class="lg:col-span-7 space-y-6">
-
-            <!-- Step 1: Student & File Naming Metadata Card -->
-            <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-5 sm:p-6 shadow-xl backdrop-blur-sm">
-                <div class="flex items-center justify-between mb-4">
-                    <div class="flex items-center gap-2.5">
-                        <span class="w-6 h-6 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 text-xs font-bold flex items-center justify-center">1</span>
-                        <h2 class="text-base font-semibold text-white">Student & Document Details</h2>
-                    </div>
-                    <label class="flex items-center gap-2 cursor-pointer select-none text-xs text-slate-300">
-                        <input type="checkbox" id="autoPrefixToggle" checked onchange="updateFilenamePreview()" class="rounded bg-slate-800 border-slate-700 text-emerald-500 focus:ring-emerald-500/30">
-                        <span>Auto-format PDF filename</span>
-                    </label>
-                </div>
-
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                    <!-- Roll Number Selector (32-64) -->
-                    <div>
-                        <label for="rollNumber" class="block text-xs font-medium text-slate-400 mb-1.5">Roll Number (32–64)</label>
-                        <div class="relative">
-                            <select id="rollNumber" onchange="updateFilenamePreview()" class="w-full rounded-xl bg-slate-950 border border-slate-800 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 text-sm text-white px-3.5 py-2.5 appearance-none font-mono transition-colors">
-                                <option value="">Select Roll...</option>
-                            </select>
-                            <i data-lucide="chevron-down" class="w-4 h-4 text-slate-400 absolute right-3 top-3 pointer-events-none"></i>
-                        </div>
-                    </div>
-
-                    <!-- Student Name -->
-                    <div>
-                        <label for="studentName" class="block text-xs font-medium text-slate-400 mb-1.5">Student Name (Optional)</label>
-                        <input
-                                type="text"
-                                id="studentName"
-                                placeholder="e.g. Rohan Sharma"
-                                oninput="updateFilenamePreview()"
-                                class="w-full rounded-xl bg-slate-950 border border-slate-800 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 text-sm text-white px-3.5 py-2.5 placeholder-slate-600 transition-colors"
-                        >
-                    </div>
-
-                    <!-- Category / Subject Tag -->
-                    <div>
-                        <label for="docCategory" class="block text-xs font-medium text-slate-400 mb-1.5">Submission Type</label>
-                        <input
-                                type="text"
-                                id="docCategory"
-                                placeholder="e.g. Lab_04 or Assignment"
-                                oninput="updateFilenamePreview()"
-                                class="w-full rounded-xl bg-slate-950 border border-slate-800 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 text-sm text-white px-3.5 py-2.5 placeholder-slate-600 transition-colors"
-                        >
-                    </div>
-                </div>
-
-                <!-- Live Filename Preview Bar -->
-                <div class="mt-4 pt-3 border-t border-slate-800/80 flex items-center justify-between text-xs text-slate-400">
-                    <span>Uploaded filename format:</span>
-                    <code id="filenamePreview" class="text-emerald-400 font-mono bg-slate-950 px-2.5 py-1 rounded-lg border border-slate-800">
-                        OriginalFileName.pdf
-                    </code>
-                </div>
-            </div>
-
-            <!-- Step 2: Drag & Drop PDF Zone -->
-            <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-5 sm:p-6 shadow-xl backdrop-blur-sm">
-                <div class="flex items-center justify-between mb-4">
-                    <div class="flex items-center gap-2.5">
-                        <span class="w-6 h-6 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 text-xs font-bold flex items-center justify-center">2</span>
-                        <h2 class="text-base font-semibold text-white">Select or Drop PDF Files</h2>
-                    </div>
-                    <span class="text-xs font-mono text-slate-400">Strict .PDF validation • Max 25MB/file</span>
-                </div>
-
-                <!-- Interactive Dropzone -->
-                <div
-                        id="dropZone"
-                        onclick="document.getElementById('pdfFileInput').click()"
-                        class="border-2 border-dashed border-slate-700 hover:border-emerald-500/70 bg-slate-950/50 hover:bg-slate-950/80 rounded-2xl p-8 sm:p-10 text-center cursor-pointer transition-all duration-200 group"
-                >
-                    <input
-                            type="file"
-                            id="pdfFileInput"
-                            accept=".pdf,application/pdf"
-                            multiple
-                            class="hidden"
-                            onchange="handleFileSelect(event)"
-                    >
-                    <div class="w-16 h-16 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center mx-auto mb-4 group-hover:scale-110 group-hover:bg-emerald-500/20 transition-all">
-                        <i data-lucide="file-up" class="w-8 h-8 text-emerald-400"></i>
-                    </div>
-                    <h3 class="text-base sm:text-lg font-semibold text-white mb-1">
-                        Drag & drop your PDF files here
-                    </h3>
-                    <p class="text-xs sm:text-sm text-slate-400 max-w-md mx-auto mb-5">
-                        Click anywhere to browse your device. Supports single or batch PDF uploads directly to <span class="text-slate-200 font-medium">CSE CYS 1 (32-64)</span>.
-                    </p>
-                    <div class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-800 group-hover:bg-emerald-600 text-slate-200 group-hover:text-white text-xs font-medium transition-colors">
-                        <i data-lucide="folder-search" class="w-4 h-4"></i>
-                        <span>Browse Local PDFs</span>
-                    </div>
-                </div>
-
-                <!-- Staged Files Ready to Upload -->
-                <div id="stagedFilesSection" class="mt-6 hidden">
-                    <div class="flex items-center justify-between mb-3">
-                            <span class="text-xs font-semibold uppercase tracking-wider text-slate-400">
-                                Staged PDF Queue (<span id="stagedCount">0</span>)
-                            </span>
-                        <button onclick="clearStagedFiles()" class="text-xs text-rose-400 hover:text-rose-300 flex items-center gap-1">
-                            <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
-                            Clear All
-                        </button>
-                    </div>
-
-                    <div id="stagedFilesList" class="space-y-2.5 max-h-64 overflow-y-auto pr-1"></div>
-
-                    <!-- Primary Upload Trigger Button -->
-                    <div class="mt-5 flex flex-col sm:flex-row gap-3">
-                        <button
-                                id="uploadAllBtn"
-                                onclick="uploadAllStagedFiles()"
-                                class="flex-1 py-3 px-5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-semibold text-sm flex items-center justify-center gap-2.5 shadow-lg shadow-emerald-600/25 transition-all"
-                        >
-                            <i data-lucide="cloud-upload" class="w-5 h-5"></i>
-                            <span>Upload PDFs to CSE CYS 1 (32-64)</span>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Right Column: Live Upload Status Queue & Direct Drive View (5 cols) -->
-        <div class="lg:col-span-5 space-y-6">
-
-            <!-- Upload Activity & History Card -->
-            <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-5 sm:p-6 shadow-xl backdrop-blur-sm flex flex-col h-[390px]">
-                <div class="flex items-center justify-between mb-4">
-                    <div class="flex items-center gap-2">
-                        <i data-lucide="activity" class="w-5 h-5 text-emerald-400"></i>
-                        <h2 class="text-base font-semibold text-white">Upload Activity Log</h2>
-                    </div>
-                    <span id="completedCountBadge" class="px-2.5 py-0.5 rounded-full text-xs font-mono bg-slate-800 text-slate-300">
-                            0 Uploaded
-                        </span>
-                </div>
-
-                <!-- Scrollable History List -->
-                <div id="uploadHistoryList" class="flex-1 overflow-y-auto space-y-3 pr-1">
-                    <!-- Empty State -->
-                    <div id="emptyHistoryState" class="h-full flex flex-col items-center justify-center text-center p-6 border border-dashed border-slate-800/80 rounded-xl">
-                        <div class="w-12 h-12 rounded-full bg-slate-800/60 flex items-center justify-center text-slate-500 mb-3">
-                            <i data-lucide="file-check-2" class="w-6 h-6"></i>
-                        </div>
-                        <p class="text-sm font-medium text-slate-400">No PDFs uploaded in this session</p>
-                        <p class="text-xs text-slate-500 mt-1 max-w-xs">
-                            Select a PDF on the left to test the upload pipeline or send files directly to the CSE CYS 1 folder.
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Direct Google Drive Folder Card (Fallback & Verification) -->
-            <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-5 sm:p-6 shadow-xl backdrop-blur-sm">
-                <div class="flex items-center justify-between mb-3">
-                    <div class="flex items-center gap-2">
-                        <i data-lucide="folder-git-2" class="w-5 h-5 text-blue-400"></i>
-                        <h3 class="text-sm font-semibold text-white">Direct Google Drive Access</h3>
-                    </div>
-                    <span class="text-[11px] font-mono text-blue-400 bg-blue-500/10 px-2 py-0.5 rounded border border-blue-500/20">Public Link</span>
-                </div>
-                <p class="text-xs text-slate-400 leading-relaxed mb-4">
-                    Want to verify your uploaded PDF or drag-and-drop directly inside Google Drive's web interface? Open the shared folder below:
-                </p>
-
-                <div class="p-3.5 rounded-xl bg-slate-950 border border-slate-800/90 flex items-center justify-between gap-3 mb-4">
-                    <div class="flex items-center gap-3 min-w-0">
-                        <div class="w-9 h-9 rounded-lg bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400 shrink-0">
-                            <i data-lucide="folder" class="w-5 h-5"></i>
-                        </div>
-                        <div class="truncate">
-                            <div class="text-xs font-semibold text-white truncate">CSE CYS 1 (32-64)</div>
-                            <div class="text-[11px] text-slate-500 font-mono truncate">drive.google.com/drive/folders/1LWipk...</div>
-                        </div>
-                    </div>
-                    <a
-                            href="https://drive.google.com/drive/folders/1LWipkExkedlCi2EKhG-YJKpt2HjKOZfe"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            class="px-3 py-1.5 rounded-lg bg-blue-600/20 hover:bg-blue-600/30 text-blue-300 border border-blue-500/30 text-xs font-medium shrink-0 flex items-center gap-1.5 transition-colors"
-                    >
-                        <span>Launch</span>
-                        <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i>
-                    </a>
-                </div>
-
-                <!-- Embedded Folder Preview Toggle -->
-                <button
-                        onclick="toggleDriveIframe()"
-                        class="w-full py-2 px-3 rounded-xl bg-slate-800/80 hover:bg-slate-800 text-slate-300 text-xs font-medium flex items-center justify-center gap-2 border border-slate-700/70 transition-colors"
-                >
-                    <i data-lucide="layout-grid" class="w-4 h-4 text-emerald-400"></i>
-                    <span id="iframeToggleText">Show Embedded Drive Folder View</span>
-                </button>
-
-                <div id="driveIframeContainer" class="mt-4 hidden rounded-xl overflow-hidden border border-slate-800 bg-slate-950">
-                    <iframe
-                            src="https://drive.google.com/embeddedfolderview?id=1LWipkExkedlCi2EKhG-YJKpt2HjKOZfe#list"
-                            class="w-full h-56 border-0"
-                            title="CSE CYS 1 (32-64) Embedded Folder View"
-                    ></iframe>
-                </div>
-            </div>
-
-        </div>
-    </div>
-</main>
+<div class="card">
+    <h2>Submission Log</h2>
+    <button onclick="loadSubmissions()" style="width: auto; padding: 8px 16px; margin-bottom: 10px; font-size: 14px;">Refresh Log</button>
+    <table>
+        <thead>
+        <tr>
+            <th>Filename</th>
+            <th>Date & Time</th>
+        </tr>
+        </thead>
+        <tbody id="logTableBody">
+        <tr><td colspan="2">Loading submissions...</td></tr>
+        </tbody>
+    </table>
+</div>
 
 <script>
-    // Target Google Drive Folder Details
-    const TARGET_FOLDER_ID = "1LWipkExkedlCi2EKhG-YJKpt2HjKOZfe";
-    const TARGET_FOLDER_URL = "https://drive.google.com/drive/folders/1LWipkExkedlCi2EKhG-YJKpt2HjKOZfe";
+    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxH3kF9oHRR6MweGa_j_34ZpjtcHkM5Jg0u3Driyp0-TKa8zUPn3V0bL6I7EHeVmlZiLg/exec";
 
-    // Hardcoded Apps Script Web App URL for public use
-    const webAppUrl = "https://script.google.com/macros/s/AKfycbxH3kF9oHRR6MweGa_j_34ZpjtcHkM5Jg0u3Driyp0-TKa8zUPn3V0bL6I7EHeVmlZiLg/exec";
-
-    // State for staged files & upload history
-    let stagedFiles = [];
-    let completedUploads = 0;
-
-    // Initialize Page
-    window.addEventListener("DOMContentLoaded", () => {
-        lucide.createIcons();
-        populateRollNumbers();
-        setupDragAndDrop();
-        updateFilenamePreview();
-    });
-
-    // Populate Roll Numbers 32 to 64
-    function populateRollNumbers() {
-        const select = document.getElementById("rollNumber");
-        for (let r = 32; r <= 64; r++) {
-            const opt = document.createElement("option");
-            opt.value = r;
-            opt.textContent = `Roll No. ${r}`;
-            select.appendChild(opt);
-        }
+    // Populate Roll 1-64
+    const rollSelect = document.getElementById("rollNo");
+    for (let i = 1; i <= 64; i++) {
+        let opt = document.createElement("option");
+        opt.value = i;
+        opt.textContent = `Roll ${i}`;
+        rollSelect.appendChild(opt);
     }
 
-    // Compute formatted PDF filename based on Roll Number, Name, and Category
-    function computeFormattedFilename(originalName) {
-        const autoPrefix = document.getElementById("autoPrefixToggle").checked;
-        if (!autoPrefix) return originalName;
+    async function uploadFile() {
+        const roll = document.getElementById("rollNo").value;
+        const name = document.getElementById("studentName").value.trim();
+        const fileInput = document.getElementById("fileInput").files[0];
+        const status = document.getElementById("status");
+        const btn = document.getElementById("uploadBtn");
 
-        const roll = document.getElementById("rollNumber").value.trim();
-        const name = document.getElementById("studentName").value.trim().replace(/\s+/g, "_");
-        const category = document.getElementById("docCategory").value.trim().replace(/\s+/g, "_");
-
-        const parts = [];
-        if (roll) parts.push(roll);
-        if (name) parts.push(name);
-        if (category) parts.push(category);
-
-        const cleanOriginal = originalName.replace(/\s+/g, "_");
-        parts.push(cleanOriginal);
-
-        return parts.join("_");
-    }
-
-    function updateFilenamePreview() {
-        const sample = stagedFiles.length > 0 ? stagedFiles[0].file.name : "Document.pdf";
-        document.getElementById("filenamePreview").textContent = computeFormattedFilename(sample);
-        renderStagedFiles();
-    }
-
-    // Setup Drag-and-Drop listeners
-    function setupDragAndDrop() {
-        const dropZone = document.getElementById("dropZone");
-
-        ["dragenter", "dragover", "dragleave", "drop"].forEach(evt => {
-            dropZone.addEventListener(evt, e => {
-                e.preventDefault();
-                e.stopPropagation();
-            });
-        });
-
-        ["dragenter", "dragover"].forEach(evt => {
-            dropZone.addEventListener(evt, () => dropZone.classList.add("drop-zone-active"));
-        });
-
-        ["dragleave", "drop"].forEach(evt => {
-            dropZone.addEventListener(evt, () => dropZone.classList.remove("drop-zone-active"));
-        });
-
-        dropZone.addEventListener("drop", e => {
-            const files = Array.from(e.dataTransfer.files);
-            validateAndStageFiles(files);
-        });
-    }
-
-    function handleFileSelect(event) {
-        const files = Array.from(event.target.files);
-        validateAndStageFiles(files);
-        event.target.value = ""; // Reset input so same file can be re-selected
-    }
-
-    // Strict PDF Validation & Staging
-    function validateAndStageFiles(files) {
-        let added = 0;
-        files.forEach(file => {
-            const isPdf = file.type === "application/pdf" || file.name.toLowerCase().endsWith(".pdf");
-            if (!isPdf) {
-                showToast(`Skipped "${file.name}": Only PDF files are allowed.`, "error");
-                return;
-            }
-            if (file.size > 25 * 1024 * 1024) {
-                showToast(`Skipped "${file.name}": File exceeds 25MB limit.`, "error");
-                return;
-            }
-            stagedFiles.push({
-                id: "file_" + Date.now() + "_" + Math.random().toString(36).substring(2, 7),
-                file: file
-            });
-            added++;
-        });
-
-        if (added > 0) {
-            showToast(`${added} PDF file(s) added to upload queue.`, "success");
-            updateFilenamePreview();
-        }
-    }
-
-    function formatBytes(bytes) {
-        if (bytes < 1024) return bytes + " B";
-        else if (bytes < 1048576) return (bytes / 1024).toFixed(1) + " KB";
-        else return (bytes / 1048576).toFixed(2) + " MB";
-    }
-
-    // Render Staged Files List
-    function renderStagedFiles() {
-        const section = document.getElementById("stagedFilesSection");
-        const list = document.getElementById("stagedFilesList");
-        const countEl = document.getElementById("stagedCount");
-
-        if (stagedFiles.length === 0) {
-            section.classList.add("hidden");
+        if (!roll || !name || !fileInput) {
+            status.textContent = "Please fill all fields and select a PDF.";
+            status.style.color = "#ff6b6b";
             return;
         }
 
-        section.classList.remove("hidden");
-        countEl.textContent = stagedFiles.length;
-        list.innerHTML = "";
+        btn.disabled = true;
+        status.textContent = "Uploading... please wait.";
+        status.style.color = "var(--text)";
 
-        stagedFiles.forEach(item => {
-            const finalName = computeFormattedFilename(item.file.name);
-            const row = document.createElement("div");
-            row.className = "p-3 rounded-xl bg-slate-950/90 border border-slate-800 flex items-center justify-between gap-3";
-            row.innerHTML = `
-                    <div class="flex items-center gap-3 min-w-0">
-                        <div class="w-9 h-9 rounded-lg bg-rose-500/10 border border-rose-500/20 flex items-center justify-center text-rose-400 shrink-0">
-                            <i data-lucide="file-text" class="w-5 h-5"></i>
-                        </div>
-                        <div class="min-w-0">
-                            <div class="text-xs font-semibold text-white truncate" title="${finalName}">${finalName}</div>
-                            <div class="text-[11px] text-slate-500 font-mono">${formatBytes(item.file.size)} • PDF Document</div>
-                        </div>
-                    </div>
-                    <button onclick="removeStagedFile('${item.id}')" class="p-1.5 rounded-lg text-slate-500 hover:text-rose-400 hover:bg-slate-900 transition-colors" title="Remove">
-                        <i data-lucide="x" class="w-4 h-4"></i>
-                    </button>
-                `;
-            list.appendChild(row);
-        });
+        const reader = new FileReader();
+        reader.onload = async function(e) {
+            const base64 = e.target.result.split(',')[1];
+            const newFilename = `Roll${roll}_${name}_Document.pdf`;
 
-        lucide.createIcons();
-    }
-
-    function removeStagedFile(id) {
-        stagedFiles = stagedFiles.filter(f => f.id !== id);
-        renderStagedFiles();
-    }
-
-    function clearStagedFiles() {
-        stagedFiles = [];
-        renderStagedFiles();
-    }
-
-    // Convert File to Base64 string
-    function fileToBase64(file) {
-        return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.onload = () => {
-                const base64String = reader.result.split(",")[1];
-                resolve(base64String);
-            };
-            reader.onerror = error => reject(error);
-            reader.readAsDataURL(file);
-        });
-    }
-
-    // Upload All Staged Files
-    async function uploadAllStagedFiles() {
-        if (stagedFiles.length === 0) return;
-
-        const uploadBtn = document.getElementById("uploadAllBtn");
-        uploadBtn.disabled = true;
-        uploadBtn.classList.add("opacity-60", "cursor-not-allowed");
-
-        const queueToProcess = [...stagedFiles];
-        stagedFiles = [];
-        renderStagedFiles();
-
-        // Hide empty history state
-        const emptyState = document.getElementById("emptyHistoryState");
-        if (emptyState) emptyState.classList.add("hidden");
-
-        for (const item of queueToProcess) {
-            const finalFilename = computeFormattedFilename(item.file.name);
-            await processSingleUpload(item.file, finalFilename);
-        }
-
-        uploadBtn.disabled = false;
-        uploadBtn.classList.remove("opacity-60", "cursor-not-allowed");
-    }
-
-    // Process Individual File Upload via Apps Script
-    async function processSingleUpload(file, finalFilename) {
-        const historyList = document.getElementById("uploadHistoryList");
-        const cardId = "hist_" + Date.now() + "_" + Math.random().toString(36).substring(2, 6);
-
-        const card = document.createElement("div");
-        card.id = cardId;
-        card.className = "p-3.5 rounded-xl bg-slate-950 border border-slate-800 space-y-2.5 transition-all";
-        card.innerHTML = `
-                <div class="flex items-center justify-between gap-2">
-                    <div class="flex items-center gap-2.5 min-w-0">
-                        <i data-lucide="file-text" class="w-4 h-4 text-emerald-400 shrink-0"></i>
-                        <span class="text-xs font-semibold text-white truncate">${finalFilename}</span>
-                    </div>
-                    <span id="${cardId}_badge" class="px-2 py-0.5 rounded text-[10px] font-mono bg-blue-500/15 text-blue-300 border border-blue-500/30 shrink-0">
-                        Uploading...
-                    </span>
-                </div>
-                <div class="w-full h-1.5 bg-slate-800 rounded-full overflow-hidden">
-                    <div id="${cardId}_bar" class="h-full bg-emerald-500 transition-all duration-300" style="width: 15%"></div>
-                </div>
-                <div id="${cardId}_footer" class="flex items-center justify-between text-[11px] text-slate-500 font-mono">
-                    <span>${formatBytes(file.size)}</span>
-                    <span id="${cardId}_status">Encoding PDF to Base64...</span>
-                </div>
-            `;
-        historyList.prepend(card);
-        lucide.createIcons();
-
-        const bar = document.getElementById(`${cardId}_bar`);
-        const badge = document.getElementById(`${cardId}_badge`);
-        const statusText = document.getElementById(`${cardId}_status`);
-
-        try {
-            const base64Data = await fileToBase64(file);
-            bar.style.width = "55%";
-
-            statusText.textContent = "Transferring to CSE CYS 1 (32-64)...";
-            const response = await fetch(webAppUrl, {
-                method: "POST",
-                headers: { "Content-Type": "text/plain;charset=utf-8" },
-                body: JSON.stringify({
-                    filename: finalFilename,
-                    base64: base64Data,
-                    mimeType: "application/pdf",
-                    folderId: TARGET_FOLDER_ID
-                })
-            });
-
-            const result = await response.json();
-            if (result.status === "success") {
-                bar.style.width = "100%";
-                badge.className = "px-2 py-0.5 rounded text-[10px] font-mono bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 shrink-0";
-                badge.textContent = "Uploaded to Drive";
-                statusText.innerHTML = `<a href="${result.fileUrl || TARGET_FOLDER_URL}" target="_blank" class="text-emerald-400 hover:underline">View in Google Drive &rarr;</a>`;
-                incrementCompletedCount();
-                showToast(`Uploaded "${finalFilename}" to CSE CYS 1 (32-64)!`, "success");
-            } else {
-                throw new Error(result.message || "Script returned error");
+            try {
+                const response = await fetch(WEB_APP_URL, {
+                    method: "POST",
+                    body: JSON.stringify({ base64: base64, filename: newFilename })
+                });
+                const result = await response.json();
+                if (result.status === "success") {
+                    status.textContent = "Upload successful!";
+                    status.style.color = "var(--primary)";
+                    document.getElementById("fileInput").value = "";
+                    loadSubmissions(); // Refresh the log
+                } else {
+                    throw new Error(result.message);
+                }
+            } catch (error) {
+                status.textContent = "Upload failed. Try again.";
+                status.style.color = "#ff6b6b";
             }
-        } catch (err) {
-            bar.style.width = "100%";
-            bar.classList.replace("bg-emerald-500", "bg-rose-500");
-            badge.className = "px-2 py-0.5 rounded text-[10px] font-mono bg-rose-500/15 text-rose-300 border border-rose-500/30 shrink-0";
-            badge.textContent = "Upload Failed";
-            statusText.textContent = err.message || "Network or CORS error";
-            showToast(`Failed to upload ${finalFilename}: ${err.message}`, "error");
+            btn.disabled = false;
+        };
+        reader.readAsDataURL(fileInput);
+    }
+
+    async function loadSubmissions() {
+        const tbody = document.getElementById("logTableBody");
+        try {
+            const response = await fetch(WEB_APP_URL);
+            const result = await response.json();
+
+            if (result.status === "success") {
+                tbody.innerHTML = "";
+                if (result.files.length === 0) {
+                    tbody.innerHTML = "<tr><td colspan='2'>No submissions yet.</td></tr>";
+                    return;
+                }
+                result.files.forEach(file => {
+                    const date = new Date(file.timestamp);
+                    const row = `<tr>
+                            <td>${file.name}</td>
+                            <td>${date.toLocaleDateString()} ${date.toLocaleTimeString()}</td>
+                        </tr>`;
+                    tbody.innerHTML += row;
+                });
+            }
+        } catch (error) {
+            tbody.innerHTML = "<tr><td colspan='2'>Failed to load log.</td></tr>";
         }
     }
 
-    function incrementCompletedCount() {
-        completedUploads++;
-        document.getElementById("completedCountBadge").textContent = `${completedUploads} Uploaded`;
-    }
-
-    // Toggle Embedded Google Drive Iframe
-    function toggleDriveIframe() {
-        const container = document.getElementById("driveIframeContainer");
-        const label = document.getElementById("iframeToggleText");
-        if (container.classList.contains("hidden")) {
-            container.classList.remove("hidden");
-            label.textContent = "Hide Embedded Drive Folder View";
-        } else {
-            container.classList.add("hidden");
-            label.textContent = "Show Embedded Drive Folder View";
-        }
-    }
-
-    // Custom Toast Notification
-    function showToast(message, type = "info") {
-        const container = document.getElementById("toastContainer");
-        const toast = document.createElement("div");
-
-        let borderColor = "border-slate-700";
-        let iconName = "info";
-        let iconColor = "text-blue-400";
-
-        if (type === "success") {
-            borderColor = "border-emerald-500/40";
-            iconName = "check-circle-2";
-            iconColor = "text-emerald-400";
-        } else if (type === "error") {
-            borderColor = "border-rose-500/40";
-            iconName = "alert-circle";
-            iconColor = "text-rose-400";
-        }
-
-        toast.className = `pointer-events-auto p-3.5 rounded-xl bg-slate-900/95 backdrop-blur-md border ${borderColor} shadow-xl flex items-start gap-3 transition-all duration-300`;
-        toast.innerHTML = `
-                <i data-lucide="${iconName}" class="w-4 h-4 ${iconColor} shrink-0 mt-0.5"></i>
-                <p class="text-xs text-slate-200 leading-relaxed flex-1">${message}</p>
-            `;
-        container.appendChild(toast);
-        lucide.createIcons();
-
-        setTimeout(() => {
-            toast.classList.add("opacity-0", "translate-x-4");
-            setTimeout(() => toast.remove(), 300);
-        }, 4000);
-    }
+    // Load log on start
+    window.onload = loadSubmissions;
 </script>
 </body>
 </html>
